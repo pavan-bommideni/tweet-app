@@ -16,13 +16,13 @@ import org.springframework.util.StringUtils;
 
 @Service
 public class TweetService {
-	
-	private static String TWEET_DELIMITER = "#";
-	
+
+	private static final String TWEET_DELIMITER = "#";
+
 	@Value("${top-tweets-count}")
 	private int topTweetsCount;
-	
-	public  void acceptInputAndDisplayTopHashTags() {
+
+	public void acceptInputAndDisplayTopHashTags() {
 		Scanner scanner = new Scanner(System.in);
 		System.out.println("Enter the number of tweets to be processed: ");
 		int n = scanner.nextInt();
@@ -47,14 +47,15 @@ public class TweetService {
 
 		Map<String, Long> tagsVsCount = hashTags.stream().filter(tag -> !StringUtils.isEmpty(tag))
 				.collect(Collectors.groupingBy(tag -> tag, Collectors.counting())).entrySet().stream()
-				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(topTweetsCount).collect(Collectors.toMap(
-						Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, LinkedHashMap::new));
+				.sorted(Map.Entry.comparingByValue(Comparator.reverseOrder())).limit(topTweetsCount)
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue,
+						LinkedHashMap::new));
 
 		if (!CollectionUtils.isEmpty(tagsVsCount)) {
-			System.out.println("Top "+topTweetsCount+" Hashtags and count are displayed below:");
+			System.out.println("Top " + topTweetsCount + " Hashtags and count are displayed below:");
 			tagsVsCount.keySet().forEach(tag -> System.out.println("Tag: " + tag + " Count: " + tagsVsCount.get(tag)));
 		} else {
-			System.out.println("Top "+topTweetsCount+" Hashtags and count are not available.");
+			System.out.println("Top " + topTweetsCount + " Hashtags and count are not available.");
 		}
 
 	}

@@ -8,19 +8,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class TechMojoTestApplication {
-	
+
 	@Autowired
-	private TweetService tweetService; 
+	private TweetService tweetService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(TechMojoTestApplication.class, args);
 	}
-	
+
 	@PostConstruct
 	public void startUp() {
 		tweetService.acceptInputAndDisplayTopHashTags();
 	}
-
-	
 
 }
